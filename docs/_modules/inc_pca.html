@@ -1,0 +1,561 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>inc_pca &mdash; inc_pca  documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> inc_pca
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../inc_pca.html">inc_pca module</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">inc_pca</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="index.html">Module code</a> &raquo;</li>
+        
+      <li>inc_pca</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for inc_pca</h1><div class="highlight"><pre>
+<span></span><span class="c1">#  Because pybind11 cannot generate default parameters well, this code is to set them</span>
+
+<span class="kn">import</span> <span class="nn">inc_pca_cpp</span>
+
+
+<div class="viewcode-block" id="IncPCA"><a class="viewcode-back" href="../inc_pca.html#inc_pca.IncPCA">[docs]</a><span class="k">class</span> <span class="nc">IncPCA</span><span class="p">(</span><span class="n">inc_pca_cpp</span><span class="o">.</span><span class="n">IncPCA</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Incremental principal components analysis.</span>
+<span class="sd">    Implementation of the incremental PCA of Ross et al., 2008 and the</span>
+<span class="sd">    geometric transformation, position estimation, uncertatinty measures by</span>
+<span class="sd">    Fujiwara et al.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    n_components : int, (default=2)</span>
+<span class="sd">        Number of components to keep. If n_components is 0,</span>
+<span class="sd">        then n_components is set to min(n_samples, n_features).</span>
+<span class="sd">    forgetting_factor: float, (default=1.0)</span>
+<span class="sd">        A forgetting factor, f,  provides a way to reduce the contributions of</span>
+<span class="sd">        past observations to the latest result. The value of f ranges from 0 to</span>
+<span class="sd">        1 where f = 1 means no past results will be forgotten. When 0 &lt;= f &lt; 1,</span>
+<span class="sd">        the contributions of past observations gradually decrease as new data</span>
+<span class="sd">        points are obtained. As described in [Ross et al., 2008], the effective</span>
+<span class="sd">        size of the observation history (a number of observations which affect</span>
+<span class="sd">        the PCA result) equals to m/(1 - f) (m: number of new data points). For</span>
+<span class="sd">        example, when f = 0.98 and m = 2, the most recent 100 observations are</span>
+<span class="sd">        effective.</span>
+<span class="sd">    Attributes</span>
+<span class="sd">    ----------</span>
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    &gt;&gt;&gt; import math</span>
+<span class="sd">    &gt;&gt;&gt; import matplotlib.pyplot as plt</span>
+<span class="sd">    &gt;&gt;&gt; import numpy as np</span>
+<span class="sd">    &gt;&gt;&gt; from sklearn import datasets</span>
+<span class="sd">    &gt;&gt;&gt; from inc_pca import IncPCA</span>
+
+<span class="sd">    &gt;&gt;&gt; #</span>
+<span class="sd">    &gt;&gt;&gt; # 0. load data</span>
+<span class="sd">    &gt;&gt;&gt; #</span>
+<span class="sd">    &gt;&gt;&gt; iris = datasets.load_iris()</span>
+<span class="sd">    &gt;&gt;&gt; shuffled_order = [</span>
+<span class="sd">    ...     78, 142, 39, 31, 53, 42, 89, 5, 91, 65, 19, 49, 112, 125, 96, 134, 83, 77,</span>
+<span class="sd">    ...     0, 79, 100, 92, 109, 38, 67, 84, 123, 80, 62, 126, 144, 107, 50, 149, 127,</span>
+<span class="sd">    ...     46, 21, 136, 41, 35, 20, 139, 82, 27, 18, 66, 118, 145, 124, 93, 129, 97,</span>
+<span class="sd">    ...     146, 138, 120, 95, 94, 147, 43, 143, 13, 131, 116, 15, 3, 14, 37, 73, 26,</span>
+<span class="sd">    ...     70, 99, 25, 7, 23, 36, 76, 119, 88, 44, 110, 140, 57, 105, 34, 32, 103, 74,</span>
+<span class="sd">    ...     114, 87, 106, 111, 40, 117, 81, 86, 63, 56, 133, 33, 4, 9, 1, 51, 24, 30,</span>
+<span class="sd">    ...     72, 69, 61, 64, 113, 8, 135, 55, 71, 137, 85, 108, 128, 6, 90, 121, 16,</span>
+<span class="sd">    ...     148, 47, 115, 59, 17, 12, 60, 101, 52, 104, 68, 54, 2, 11, 22, 130, 10, 29,</span>
+<span class="sd">    ...     102, 45, 141, 122, 58, 132, 28, 75, 98, 48</span>
+<span class="sd">    ... ]</span>
+<span class="sd">    &gt;&gt;&gt; X = iris.data[shuffled_order, ]</span>
+<span class="sd">    &gt;&gt;&gt; group = iris.target[shuffled_order]</span>
+<span class="sd">    &gt;&gt;&gt; target_names = iris.target_names</span>
+
+<span class="sd">    &gt;&gt;&gt; #</span>
+<span class="sd">    &gt;&gt;&gt; # 1. incremental PCA and geometric transformation examples</span>
+<span class="sd">    &gt;&gt;&gt; #</span>
+<span class="sd">    &gt;&gt;&gt; ipca = IncPCA(2, 1.0)</span>
+<span class="sd">    &gt;&gt;&gt; m = 2  # number of new points</span>
+<span class="sd">    &gt;&gt;&gt; # process 20 x m new points</span>
+<span class="sd">    &gt;&gt;&gt; for i in range(20):</span>
+<span class="sd">    ...     ipca.partial_fit(X[m * i:m * (i + 1), ])</span>
+<span class="sd">    &gt;&gt;&gt; Y_a = ipca.transform(X[0:m * 20, ])</span>
+<span class="sd">    &gt;&gt;&gt; # add m new points</span>
+<span class="sd">    &gt;&gt;&gt; ipca.partial_fit(X[m * 21:m * 22, ])</span>
+<span class="sd">    &gt;&gt;&gt; Y_b = ipca.transform(X[0:m * 22, ])</span>
+<span class="sd">    &gt;&gt;&gt; # apply the geometric transformation</span>
+<span class="sd">    &gt;&gt;&gt; Y_bg = IncPCA.geom_trans(Y_a, Y_b)</span>
+
+<span class="sd">    &gt;&gt;&gt; # plot results</span>
+<span class="sd">    &gt;&gt;&gt; plt.figure()</span>
+<span class="sd">    &gt;&gt;&gt; colors = [&#39;navy&#39;, &#39;turquoise&#39;, &#39;darkorange&#39;]</span>
+<span class="sd">    &gt;&gt;&gt; lw = 2</span>
+<span class="sd">    &gt;&gt;&gt; for color, i, target_name in zip(colors, [0, 1, 2], target_names):</span>
+<span class="sd">    ...     plt.scatter(</span>
+<span class="sd">    ...         Y_a[group[0:len(Y_a)] == i, 0],</span>
+<span class="sd">    ...         Y_a[group[0:len(Y_a)] == i, 1],</span>
+<span class="sd">    ...         color=color,</span>
+<span class="sd">    ...         alpha=.8,</span>
+<span class="sd">    ...         lw=lw,</span>
+<span class="sd">    ...         label=target_name)</span>
+<span class="sd">    &gt;&gt;&gt; plt.legend(loc=&#39;best&#39;, shadow=False, scatterpoints=1)</span>
+<span class="sd">    &gt;&gt;&gt; plt.title(&#39;Inc PCA of IRIS with first obtained data points&#39;)</span>
+<span class="sd">    &gt;&gt;&gt; plt.figure()</span>
+<span class="sd">    &gt;&gt;&gt; for color, i, target_name in zip(colors, [0, 1, 2], target_names):</span>
+<span class="sd">    ...     plt.scatter(</span>
+<span class="sd">    ...         Y_b[group[0:len(Y_b)] == i, 0],</span>
+<span class="sd">    ...         Y_b[group[0:len(Y_b)] == i, 1],</span>
+<span class="sd">    ...         color=color,</span>
+<span class="sd">    ...         alpha=.8,</span>
+<span class="sd">    ...         label=target_name)</span>
+<span class="sd">    &gt;&gt;&gt; plt.legend(loc=&#39;best&#39;, shadow=False, scatterpoints=1)</span>
+<span class="sd">    &gt;&gt;&gt; plt.title(&#39;Inc PCA of IRIS with additional data points&#39;)</span>
+<span class="sd">    &gt;&gt;&gt; plt.figure()</span>
+<span class="sd">    &gt;&gt;&gt; for color, i, target_name in zip(colors, [0, 1, 2], target_names):</span>
+<span class="sd">    ...     plt.scatter(</span>
+<span class="sd">    ...         Y_bg[group[0:len(Y_bg)] == i, 0],</span>
+<span class="sd">    ...         Y_bg[group[0:len(Y_bg)] == i, 1],</span>
+<span class="sd">    ...         color=color,</span>
+<span class="sd">    ...         alpha=.8,</span>
+<span class="sd">    ...         label=target_name)</span>
+<span class="sd">    &gt;&gt;&gt; plt.legend(loc=&#39;best&#39;, shadow=False, scatterpoints=1)</span>
+<span class="sd">    &gt;&gt;&gt; plt.title(&#39;Inc PCA of IRIS with additional points &amp; geom trans&#39;)</span>
+<span class="sd">    &gt;&gt;&gt; plt.show()</span>
+
+<span class="sd">    &gt;&gt;&gt; #</span>
+<span class="sd">    &gt;&gt;&gt; # 2. pos estimation example</span>
+<span class="sd">    &gt;&gt;&gt; #</span>
+<span class="sd">    &gt;&gt;&gt; # incremental PCA result with only 3 features</span>
+<span class="sd">    &gt;&gt;&gt; ipca_only_3d = IncPCA(2, 1.0)</span>
+<span class="sd">    &gt;&gt;&gt; for i in range(22):</span>
+<span class="sd">    ...     ipca_only_3d.partial_fit(X[m * i:m * (i + 1), 0:3])</span>
+<span class="sd">    &gt;&gt;&gt; Y_only_3d = ipca_only_3d.transform(X[0:m * 22, 0:3])</span>
+<span class="sd">    &gt;&gt;&gt; # compare actual position with PCA resutl with full features and estimated pos</span>
+<span class="sd">    &gt;&gt;&gt; actual_pos = ipca.transform([X[48, ]])[0]</span>
+<span class="sd">    &gt;&gt;&gt; pos_only_3d = ipca_only_3d.transform([X[48, 0:3]])[0]</span>
+<span class="sd">    &gt;&gt;&gt; est_pos, uncert_u = IncPCA.pos_est(pos_only_3d, Y_only_3d, Y_b)</span>
+<span class="sd">    &gt;&gt;&gt; beta = 0.5</span>
+<span class="sd">    &gt;&gt;&gt; uncert_w = beta * uncert_u + (1.0 - beta) * ipca.get_uncert_v(3)</span>
+<span class="sd">    &gt;&gt;&gt; print(&quot;actual pos:&quot;, actual_pos)</span>
+<span class="sd">    &gt;&gt;&gt; print(&quot;estimated pos:&quot;, est_pos)</span>
+<span class="sd">    &gt;&gt;&gt; print(&quot;combined uncertainty W:&quot;, uncert_w)</span>
+
+<span class="sd">    &gt;&gt;&gt; #</span>
+<span class="sd">    &gt;&gt;&gt; # 3. example of updating beta (combined uncertainty weight)</span>
+<span class="sd">    &gt;&gt;&gt; #</span>
+<span class="sd">    &gt;&gt;&gt; # prepare ipca for each dimension l (l: {1, 2, 3, 4})</span>
+<span class="sd">    &gt;&gt;&gt; ipcas = [</span>
+<span class="sd">    ...     IncPCA(1, 1.0),</span>
+<span class="sd">    ...     IncPCA(2, 1.0),</span>
+<span class="sd">    ...     IncPCA(2, 1.0),</span>
+<span class="sd">    ...     IncPCA(2, 1.0)</span>
+<span class="sd">    ... ]</span>
+<span class="sd">    &gt;&gt;&gt; D = len(ipcas)</span>
+<span class="sd">    &gt;&gt;&gt; for l in range(len(ipcas)):</span>
+<span class="sd">    ...     ipcas[l].partial_fit(X[0:10, 0:l + 1])</span>
+<span class="sd">    &gt;&gt;&gt; def distance(p0, p1):</span>
+<span class="sd">    ...     return math.sqrt((p0[0] - p1[0])**2 + (p0[1] - p1[1])**2)</span>
+<span class="sd">    &gt;&gt;&gt; # initial parameters</span>
+<span class="sd">    &gt;&gt;&gt; beta = 0.1</span>
+<span class="sd">    &gt;&gt;&gt; sq_grad = 0.0</span>
+<span class="sd">    &gt;&gt;&gt; sq_dbeta = 0.0</span>
+<span class="sd">    &gt;&gt;&gt; betas_for_plot = [beta]</span>
+<span class="sd">    &gt;&gt;&gt; for iter in range(50):</span>
+<span class="sd">    ...     n = 10 + m * iter</span>
+<span class="sd">    ...     sprimes = []</span>
+<span class="sd">    ...     uncert_vs = np.zeros(D)</span>
+<span class="sd">    ...     uncert_us = np.zeros((D, m))</span>
+<span class="sd">    ...</span>
+<span class="sd">    ...     Y_D = ipcas[D - 1].transform(X[0:n, 0:D])</span>
+<span class="sd">    ...</span>
+<span class="sd">    ...     for l in range(D):</span>
+<span class="sd">    ...         ipcas[l].partial_fit(X[n:n + m, 0:l + 1])</span>
+<span class="sd">    ...         Y_l = ipcas[l].transform(X[0:n, 0:l + 1])</span>
+<span class="sd">    ...         # add column with zeros when l=1 to make 2D points</span>
+<span class="sd">    ...         if (l == 0):</span>
+<span class="sd">    ...             Y_l = np.concatenate((Y_l, np.zeros((n, 1))), axis=1)</span>
+<span class="sd">    ...</span>
+<span class="sd">    ...         uncert_vs[l] = ipcas[D - 1].get_uncert_v(l)</span>
+<span class="sd">    ...</span>
+<span class="sd">    ...         sigma = np.zeros((m, n))</span>
+<span class="sd">    ...         sprime = np.zeros((m, n))</span>
+<span class="sd">    ...</span>
+<span class="sd">    ...         for i in range(n):</span>
+<span class="sd">    ...             for u in range(m):</span>
+<span class="sd">    ...                 new_point = [X[n + u, 0:l + 1]]</span>
+<span class="sd">    ...                 new_point_pos = ipcas[l].transform(new_point)</span>
+<span class="sd">    ...</span>
+<span class="sd">    ...                 # add column with zeros when l=1 to make 2D points</span>
+<span class="sd">    ...                 if (l == 0):</span>
+<span class="sd">    ...                     new_point_pos = np.concatenate(</span>
+<span class="sd">    ...                         (new_point_pos, np.zeros((1, 1))), axis=1)</span>
+<span class="sd">    ...</span>
+<span class="sd">    ...                 est_pos, uncert_u = IncPCA.pos_est(new_point_pos, Y_l, Y_D)</span>
+<span class="sd">    ...</span>
+<span class="sd">    ...                 sigma[u, i] = distance(Y_D[-(m + u)], Y_D[i])</span>
+<span class="sd">    ...                 sprime[u, i] = distance(Y_l[-(m + u)], Y_l[i])</span>
+<span class="sd">    ...                 uncert_us[l, u] = uncert_u</span>
+<span class="sd">    ...         sprimes.append(sprime)</span>
+<span class="sd">    ...</span>
+<span class="sd">    ...     beta, sq_grad, sq_dbeta = IncPCA.update_uncert_weight(</span>
+<span class="sd">    ...         beta, sq_grad, sq_dbeta, sigma, sprimes, uncert_us, uncert_vs)</span>
+<span class="sd">    ...     betas_for_plot.append(beta)</span>
+<span class="sd">    &gt;&gt;&gt; plt.scatter(list(range(len(betas_for_plot))), betas_for_plot)</span>
+<span class="sd">    &gt;&gt;&gt; plt.xlabel(&#39;Number of updates&#39;)</span>
+<span class="sd">    &gt;&gt;&gt; plt.ylabel(&#39;beta&#39;)</span>
+<span class="sd">    &gt;&gt;&gt; plt.title(&#39;Automatic update of beta&#39;)</span>
+<span class="sd">    &gt;&gt;&gt; plt.show()</span>
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    The incremental PCA model is from:</span>
+<span class="sd">    `D. Ross, J. Lim, R. Lin, M. Yang, Incremental Learning for Robust Visual</span>
+<span class="sd">    Tracking, International Journal of Computer Vision, Volume 77, Issue 1-3,</span>
+<span class="sd">    pp. 125-141, 2008.`</span>
+<span class="sd">    The geometric transformation, position estimation, and uncertatinty measures</span>
+<span class="sd">    are from:</span>
+<span class="sd">    `T. Fujiwara, J.-K. Chou, Shilpika, P. Xu, L. Ren, K.-L. Ma, Incremental</span>
+<span class="sd">    Dimensionality Reduction Method for Visualizing Streaming Multidimensional</span>
+<span class="sd">    Data.`</span>
+<span class="sd">    The version of implementation in Scikit-learn was refered to implement the</span>
+<span class="sd">    incremental PCA of Ross et al, 2008. However, this implementation includes</span>
+<span class="sd">    various modifications (simplifying the parameters, adding forgetting factor,</span>
+<span class="sd">    etc).</span>
+<span class="sd">    Incremental PCA in Scikit-learn:</span>
+<span class="sd">    http://scikit-learn.org/stable/auto_examples/decomposition/plot_incremental_pca.html</span>
+<span class="sd">    References</span>
+<span class="sd">    ----------</span>
+<span class="sd">     D. Ross, J. Lim, R. Lin, M. Yang. Incremental Learning for Robust Visual</span>
+<span class="sd">        Tracking, International Journal of Computer Vision, Volume 77,</span>
+<span class="sd">        Issue 1-3, pp. 125-141, 2008.</span>
+<span class="sd">     T. Fujiwara, J.-K. Chou, Shilpika, P. Xu, L. Ren, K.-L. Ma, Incremental</span>
+<span class="sd">        Dimensionality Reduction Method for Visualizing Streaming</span>
+<span class="sd">        Multidimensional Data.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n_components</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">forgetting_factor</span><span class="o">=</span><span class="mf">1.0</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">n_components</span><span class="p">,</span> <span class="n">forgetting_factor</span><span class="p">)</span>
+
+<div class="viewcode-block" id="IncPCA.initialize"><a class="viewcode-back" href="../inc_pca.html#inc_pca.IncPCA.initialize">[docs]</a>    <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">initialize</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="IncPCA.partial_fit"><a class="viewcode-back" href="../inc_pca.html#inc_pca.IncPCA.partial_fit">[docs]</a>    <span class="k">def</span> <span class="nf">partial_fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Incremental fit with new datapoints, X. With this, PCs are updated</span>
+<span class="sd">        from previous results incrementally. X&#39;s row (i.e., number of data</span>
+<span class="sd">        points) must be greater than or equal to 2.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        X : array-like, shape (n_samples, n_features)</span>
+<span class="sd">            Training data, where n_samples is the number of samples and</span>
+<span class="sd">            n_features is the number of features. n_samples must be &gt;= 2.</span>
+<span class="sd">            n_features and n_samples must be &gt;= n_components. Also, n_features</span>
+<span class="sd">            must be the same size with the first X input to partial_fit.</span>
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        self : object</span>
+<span class="sd">            Returns the instance itself.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">partial_fit</span><span class="p">(</span><span class="n">X</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="IncPCA.transform"><a class="viewcode-back" href="../inc_pca.html#inc_pca.IncPCA.transform">[docs]</a>    <span class="k">def</span> <span class="nf">transform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Obtaining transformed result Y with X and current PCs.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        X : array-like, shape (n_samples, n_features)</span>
+<span class="sd">            Testing data, where n_samples is the number of samples and</span>
+<span class="sd">            n_features is the number of features. n_features must be the same</span>
+<span class="sd">            size with the traiding data&#39;s features used for partial_fit.</span>
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        Y : array-like, shape (n_samples, n_components)</span>
+<span class="sd">            Returns the transformed (or projected) result.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">X</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="IncPCA.get_loadings"><a class="viewcode-back" href="../inc_pca.html#inc_pca.IncPCA.get_loadings">[docs]</a>    <span class="k">def</span> <span class="nf">get_loadings</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Obtaining current PC loadings.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        W : array-like, shape (n_components, n_features)</span>
+<span class="sd">            Returns PC loadings.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">get_loadings</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="IncPCA.geom_trans"><a class="viewcode-back" href="../inc_pca.html#inc_pca.IncPCA.geom_trans">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">geom_trans</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">Y1</span><span class="p">,</span> <span class="n">Y2</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Finding the geometric transformation matrix, which maximizes the</span>
+<span class="sd">        Y2&#39;s overlap to Y1  with a combination of uniform scaling, rotation,</span>
+<span class="sd">        and sign flipping.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        Y1 : array-like, shape (n_samples, n_dimensions)</span>
+<span class="sd">            Data point positions (n_dimensions). Y1 is used as a base of ovarlapping.</span>
+<span class="sd">        Y2 : array-like, shape (n_samples, n_dimensions)</span>
+<span class="sd">            Data point positions (n_dimensions). geom_trans finds a matrix to optimally</span>
+<span class="sd">            overlap Y2 to Y1.</span>
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        Y2_g: array-like, shape (n_samples, n_dimensions)</span>
+<span class="sd">            Y2 after applied the geometric transformation.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">geom_trans</span><span class="p">(</span><span class="n">Y1</span><span class="p">,</span> <span class="n">Y2</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="IncPCA.get_uncert_v"><a class="viewcode-back" href="../inc_pca.html#inc_pca.IncPCA.get_uncert_v">[docs]</a>    <span class="k">def</span> <span class="nf">get_uncert_v</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n_obtained_features</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Obtaining the uncertainty measure, V, introduced in</span>
+<span class="sd">        [Fujiwara et al., xxxx] with current PCA result and a number of</span>
+<span class="sd">        obtained features of a new data point.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        n_obtained_features : int</span>
+<span class="sd">            Number of obtained features of a new data point.</span>
+<span class="sd">            n_obtained_features must be &lt;= n_components.</span>
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        V : double</span>
+<span class="sd">            Returns the uncertainty measure, V. V will be 0, 1 if</span>
+<span class="sd">            n_obtained_features = 0, n_components, respectively.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">get_uncert_v</span><span class="p">(</span><span class="n">n_obtained_features</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="IncPCA.pos_est"><a class="viewcode-back" href="../inc_pca.html#inc_pca.IncPCA.pos_est">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">pos_est</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="n">Y1</span><span class="p">,</span> <span class="n">Y2</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Estaimated position of p. Refer [Fujiwara et al., xxxx].</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        p: array-like, shape(1, 2)</span>
+<span class="sd">            A data point position trasformed with PCA of d=l (l&lt;=D).</span>
+<span class="sd">        Y1 : array-like, shape (n_samples, 2)</span>
+<span class="sd">            Data point positions (2D). Y1 shoule be a transformed position with</span>
+<span class="sd">            PCA of d=l (l&lt;=D).</span>
+<span class="sd">        Y2 : array-like, shape (n_samples, 2)</span>
+<span class="sd">            Data point positions (2D). Y2 shoule be a transformed position with</span>
+<span class="sd">            PCA of d=D.</span>
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        est_pos : array-like, shape(1, 2)</span>
+<span class="sd">            Returns the estimated 2D position.</span>
+<span class="sd">        uncert_u: float</span>
+<span class="sd">            Reutrn the uncertainty measure, U</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">estPosAndUncertU</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">pos_est</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">Y1</span><span class="p">,</span> <span class="n">Y2</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">estPosAndUncertU</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">estPosAndUncertU</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span></div>
+
+<div class="viewcode-block" id="IncPCA.update_uncert_weight"><a class="viewcode-back" href="../inc_pca.html#inc_pca.IncPCA.update_uncert_weight">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">update_uncert_weight</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">current_beta</span><span class="p">,</span> <span class="n">current_sq_grad</span><span class="p">,</span>
+                             <span class="n">current_sq_dbeta</span><span class="p">,</span> <span class="n">sigma</span><span class="p">,</span> <span class="n">sprimes</span><span class="p">,</span> <span class="n">uncert_us</span><span class="p">,</span>
+                             <span class="n">uncert_vs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Update the combined uncertainty weight, beta.</span>
+<span class="sd">        Refer [Fujiwara et al., xxxx].</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        current_beta: float</span>
+<span class="sd">            Current beta obtained Eq. 12 in [Fujiwara, xxx].</span>
+<span class="sd">        current_sq_grad: float</span>
+<span class="sd">            Used in Adadelta calculation in Eq. 11. Set 0 as an initial value.</span>
+<span class="sd">        current_sq_dbeta: float</span>
+<span class="sd">            Used in Adadelta calculation in Eq. 11. Set 0 as an initial value.</span>
+<span class="sd">        sigma: array-like, shape(m, n)</span>
+<span class="sd">            Distance between m new data positions and n exisiting data positions</span>
+<span class="sd">             in the PCA result after new data points obtain D dimensions.</span>
+<span class="sd">        sprimes: array-like, D x shape(m, n)</span>
+<span class="sd">            Distances between m esitmated data positions and n exisiting data</span>
+<span class="sd">            positions for each dimension l (1 &lt;= l &lt;= D).</span>
+<span class="sd">        uncert_us: array-like, shape(D, m)</span>
+<span class="sd">            Uncertainty measure U for m new data points for each dimension l.</span>
+<span class="sd">        uncert_vs: array-like, shape(D)</span>
+<span class="sd">            Uncertainty measure V for each dimension l.</span>
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        updated_beta: float</span>
+<span class="sd">        updated_sq_grad: float</span>
+<span class="sd">        updated_sq_dbeta: float</span>
+<span class="sd">            Use these updated values for the next run of update_uncert_weight</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">update_uncert_weight</span><span class="p">(</span><span class="n">current_beta</span><span class="p">,</span> <span class="n">current_sq_grad</span><span class="p">,</span>
+                                              <span class="n">current_sq_dbeta</span><span class="p">,</span> <span class="n">sigma</span><span class="p">,</span> <span class="n">sprimes</span><span class="p">,</span>
+                                              <span class="n">uncert_us</span><span class="p">,</span> <span class="n">uncert_vs</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">result</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">result</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">result</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span></div></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2019, Author
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../_static/jquery.js"></script>
+        <script type="text/javascript" src="../_static/underscore.js"></script>
+        <script type="text/javascript" src="../_static/doctools.js"></script>
+        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+
+  
+
+  <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,611 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>inc_pca module &mdash; inc_pca  documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="Welcome to inc_pca’s documentation!" href="index.html" /> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="index.html" class="icon icon-home"> inc_pca
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">inc_pca module</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">inc_pca</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>inc_pca module</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/inc_pca.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="module-inc_pca">
+<span id="inc-pca-module"></span><h1>inc_pca module<a class="headerlink" href="#module-inc_pca" title="Permalink to this headline">¶</a></h1>
+<dl class="class">
+<dt id="inc_pca.IncPCA">
+<em class="property">class </em><code class="descclassname">inc_pca.</code><code class="descname">IncPCA</code><span class="sig-paren">(</span><em>n_components=2</em>, <em>forgetting_factor=1.0</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/inc_pca.html#IncPCA"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#inc_pca.IncPCA" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">inc_pca_cpp.IncPCA</span></code></p>
+<p>Incremental principal components analysis.
+Implementation of the incremental PCA of Ross et al., 2008 and the
+geometric transformation, position estimation, uncertatinty measures by
+Fujiwara et al.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>n_components</strong> (<em>int</em><em>, </em><em>(</em><em>default=2</em><em>)</em>) – Number of components to keep. If n_components is 0,
+then n_components is set to min(n_samples, n_features).</li>
+<li><strong>forgetting_factor</strong> (<em>float</em><em>, </em><em>(</em><em>default=1.0</em><em>)</em>) – A forgetting factor, f,  provides a way to reduce the contributions of
+past observations to the latest result. The value of f ranges from 0 to
+1 where f = 1 means no past results will be forgotten. When 0 &lt;= f &lt; 1,
+the contributions of past observations gradually decrease as new data
+points are obtained. As described in [Ross et al., 2008], the effective
+size of the observation history (a number of observations which affect
+the PCA result) equals to m/(1 - f) (m: number of new data points). For
+example, when f = 0.98 and m = 2, the most recent 100 observations are
+effective.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Examples</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">math</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn</span> <span class="k">import</span> <span class="n">datasets</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">inc_pca</span> <span class="k">import</span> <span class="n">IncPCA</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1">#</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># 0. load data</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1">#</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">iris</span> <span class="o">=</span> <span class="n">datasets</span><span class="o">.</span><span class="n">load_iris</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">shuffled_order</span> <span class="o">=</span> <span class="p">[</span>
+<span class="gp">... </span>    <span class="mi">78</span><span class="p">,</span> <span class="mi">142</span><span class="p">,</span> <span class="mi">39</span><span class="p">,</span> <span class="mi">31</span><span class="p">,</span> <span class="mi">53</span><span class="p">,</span> <span class="mi">42</span><span class="p">,</span> <span class="mi">89</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">91</span><span class="p">,</span> <span class="mi">65</span><span class="p">,</span> <span class="mi">19</span><span class="p">,</span> <span class="mi">49</span><span class="p">,</span> <span class="mi">112</span><span class="p">,</span> <span class="mi">125</span><span class="p">,</span> <span class="mi">96</span><span class="p">,</span> <span class="mi">134</span><span class="p">,</span> <span class="mi">83</span><span class="p">,</span> <span class="mi">77</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="mi">0</span><span class="p">,</span> <span class="mi">79</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">92</span><span class="p">,</span> <span class="mi">109</span><span class="p">,</span> <span class="mi">38</span><span class="p">,</span> <span class="mi">67</span><span class="p">,</span> <span class="mi">84</span><span class="p">,</span> <span class="mi">123</span><span class="p">,</span> <span class="mi">80</span><span class="p">,</span> <span class="mi">62</span><span class="p">,</span> <span class="mi">126</span><span class="p">,</span> <span class="mi">144</span><span class="p">,</span> <span class="mi">107</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="mi">149</span><span class="p">,</span> <span class="mi">127</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="mi">46</span><span class="p">,</span> <span class="mi">21</span><span class="p">,</span> <span class="mi">136</span><span class="p">,</span> <span class="mi">41</span><span class="p">,</span> <span class="mi">35</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">139</span><span class="p">,</span> <span class="mi">82</span><span class="p">,</span> <span class="mi">27</span><span class="p">,</span> <span class="mi">18</span><span class="p">,</span> <span class="mi">66</span><span class="p">,</span> <span class="mi">118</span><span class="p">,</span> <span class="mi">145</span><span class="p">,</span> <span class="mi">124</span><span class="p">,</span> <span class="mi">93</span><span class="p">,</span> <span class="mi">129</span><span class="p">,</span> <span class="mi">97</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="mi">146</span><span class="p">,</span> <span class="mi">138</span><span class="p">,</span> <span class="mi">120</span><span class="p">,</span> <span class="mi">95</span><span class="p">,</span> <span class="mi">94</span><span class="p">,</span> <span class="mi">147</span><span class="p">,</span> <span class="mi">43</span><span class="p">,</span> <span class="mi">143</span><span class="p">,</span> <span class="mi">13</span><span class="p">,</span> <span class="mi">131</span><span class="p">,</span> <span class="mi">116</span><span class="p">,</span> <span class="mi">15</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">14</span><span class="p">,</span> <span class="mi">37</span><span class="p">,</span> <span class="mi">73</span><span class="p">,</span> <span class="mi">26</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="mi">70</span><span class="p">,</span> <span class="mi">99</span><span class="p">,</span> <span class="mi">25</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">23</span><span class="p">,</span> <span class="mi">36</span><span class="p">,</span> <span class="mi">76</span><span class="p">,</span> <span class="mi">119</span><span class="p">,</span> <span class="mi">88</span><span class="p">,</span> <span class="mi">44</span><span class="p">,</span> <span class="mi">110</span><span class="p">,</span> <span class="mi">140</span><span class="p">,</span> <span class="mi">57</span><span class="p">,</span> <span class="mi">105</span><span class="p">,</span> <span class="mi">34</span><span class="p">,</span> <span class="mi">32</span><span class="p">,</span> <span class="mi">103</span><span class="p">,</span> <span class="mi">74</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="mi">114</span><span class="p">,</span> <span class="mi">87</span><span class="p">,</span> <span class="mi">106</span><span class="p">,</span> <span class="mi">111</span><span class="p">,</span> <span class="mi">40</span><span class="p">,</span> <span class="mi">117</span><span class="p">,</span> <span class="mi">81</span><span class="p">,</span> <span class="mi">86</span><span class="p">,</span> <span class="mi">63</span><span class="p">,</span> <span class="mi">56</span><span class="p">,</span> <span class="mi">133</span><span class="p">,</span> <span class="mi">33</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">51</span><span class="p">,</span> <span class="mi">24</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="mi">72</span><span class="p">,</span> <span class="mi">69</span><span class="p">,</span> <span class="mi">61</span><span class="p">,</span> <span class="mi">64</span><span class="p">,</span> <span class="mi">113</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">135</span><span class="p">,</span> <span class="mi">55</span><span class="p">,</span> <span class="mi">71</span><span class="p">,</span> <span class="mi">137</span><span class="p">,</span> <span class="mi">85</span><span class="p">,</span> <span class="mi">108</span><span class="p">,</span> <span class="mi">128</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">90</span><span class="p">,</span> <span class="mi">121</span><span class="p">,</span> <span class="mi">16</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="mi">148</span><span class="p">,</span> <span class="mi">47</span><span class="p">,</span> <span class="mi">115</span><span class="p">,</span> <span class="mi">59</span><span class="p">,</span> <span class="mi">17</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">60</span><span class="p">,</span> <span class="mi">101</span><span class="p">,</span> <span class="mi">52</span><span class="p">,</span> <span class="mi">104</span><span class="p">,</span> <span class="mi">68</span><span class="p">,</span> <span class="mi">54</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">11</span><span class="p">,</span> <span class="mi">22</span><span class="p">,</span> <span class="mi">130</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">29</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="mi">102</span><span class="p">,</span> <span class="mi">45</span><span class="p">,</span> <span class="mi">141</span><span class="p">,</span> <span class="mi">122</span><span class="p">,</span> <span class="mi">58</span><span class="p">,</span> <span class="mi">132</span><span class="p">,</span> <span class="mi">28</span><span class="p">,</span> <span class="mi">75</span><span class="p">,</span> <span class="mi">98</span><span class="p">,</span> <span class="mi">48</span>
+<span class="gp">... </span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">X</span> <span class="o">=</span> <span class="n">iris</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">shuffled_order</span><span class="p">,</span> <span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">group</span> <span class="o">=</span> <span class="n">iris</span><span class="o">.</span><span class="n">target</span><span class="p">[</span><span class="n">shuffled_order</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">target_names</span> <span class="o">=</span> <span class="n">iris</span><span class="o">.</span><span class="n">target_names</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1">#</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># 1. incremental PCA and geometric transformation examples</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1">#</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ipca</span> <span class="o">=</span> <span class="n">IncPCA</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">m</span> <span class="o">=</span> <span class="mi">2</span>  <span class="c1"># number of new points</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># process 20 x m new points</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">20</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="n">ipca</span><span class="o">.</span><span class="n">partial_fit</span><span class="p">(</span><span class="n">X</span><span class="p">[</span><span class="n">m</span> <span class="o">*</span> <span class="n">i</span><span class="p">:</span><span class="n">m</span> <span class="o">*</span> <span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">),</span> <span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">Y_a</span> <span class="o">=</span> <span class="n">ipca</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">X</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="n">m</span> <span class="o">*</span> <span class="mi">20</span><span class="p">,</span> <span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># add m new points</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ipca</span><span class="o">.</span><span class="n">partial_fit</span><span class="p">(</span><span class="n">X</span><span class="p">[</span><span class="n">m</span> <span class="o">*</span> <span class="mi">21</span><span class="p">:</span><span class="n">m</span> <span class="o">*</span> <span class="mi">22</span><span class="p">,</span> <span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">Y_b</span> <span class="o">=</span> <span class="n">ipca</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">X</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="n">m</span> <span class="o">*</span> <span class="mi">22</span><span class="p">,</span> <span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># apply the geometric transformation</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">Y_bg</span> <span class="o">=</span> <span class="n">IncPCA</span><span class="o">.</span><span class="n">geom_trans</span><span class="p">(</span><span class="n">Y_a</span><span class="p">,</span> <span class="n">Y_b</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># plot results</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">colors</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;navy&#39;</span><span class="p">,</span> <span class="s1">&#39;turquoise&#39;</span><span class="p">,</span> <span class="s1">&#39;darkorange&#39;</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">lw</span> <span class="o">=</span> <span class="mi">2</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">color</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">target_name</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">colors</span><span class="p">,</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="n">target_names</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span>
+<span class="gp">... </span>        <span class="n">Y_a</span><span class="p">[</span><span class="n">group</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="nb">len</span><span class="p">(</span><span class="n">Y_a</span><span class="p">)]</span> <span class="o">==</span> <span class="n">i</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
+<span class="gp">... </span>        <span class="n">Y_a</span><span class="p">[</span><span class="n">group</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="nb">len</span><span class="p">(</span><span class="n">Y_a</span><span class="p">)]</span> <span class="o">==</span> <span class="n">i</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span>
+<span class="gp">... </span>        <span class="n">color</span><span class="o">=</span><span class="n">color</span><span class="p">,</span>
+<span class="gp">... </span>        <span class="n">alpha</span><span class="o">=.</span><span class="mi">8</span><span class="p">,</span>
+<span class="gp">... </span>        <span class="n">lw</span><span class="o">=</span><span class="n">lw</span><span class="p">,</span>
+<span class="gp">... </span>        <span class="n">label</span><span class="o">=</span><span class="n">target_name</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s1">&#39;best&#39;</span><span class="p">,</span> <span class="n">shadow</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">scatterpoints</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Inc PCA of IRIS with first obtained data points&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">color</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">target_name</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">colors</span><span class="p">,</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="n">target_names</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span>
+<span class="gp">... </span>        <span class="n">Y_b</span><span class="p">[</span><span class="n">group</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="nb">len</span><span class="p">(</span><span class="n">Y_b</span><span class="p">)]</span> <span class="o">==</span> <span class="n">i</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
+<span class="gp">... </span>        <span class="n">Y_b</span><span class="p">[</span><span class="n">group</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="nb">len</span><span class="p">(</span><span class="n">Y_b</span><span class="p">)]</span> <span class="o">==</span> <span class="n">i</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span>
+<span class="gp">... </span>        <span class="n">color</span><span class="o">=</span><span class="n">color</span><span class="p">,</span>
+<span class="gp">... </span>        <span class="n">alpha</span><span class="o">=.</span><span class="mi">8</span><span class="p">,</span>
+<span class="gp">... </span>        <span class="n">label</span><span class="o">=</span><span class="n">target_name</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s1">&#39;best&#39;</span><span class="p">,</span> <span class="n">shadow</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">scatterpoints</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Inc PCA of IRIS with additional data points&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">color</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">target_name</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">colors</span><span class="p">,</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="n">target_names</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span>
+<span class="gp">... </span>        <span class="n">Y_bg</span><span class="p">[</span><span class="n">group</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="nb">len</span><span class="p">(</span><span class="n">Y_bg</span><span class="p">)]</span> <span class="o">==</span> <span class="n">i</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
+<span class="gp">... </span>        <span class="n">Y_bg</span><span class="p">[</span><span class="n">group</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="nb">len</span><span class="p">(</span><span class="n">Y_bg</span><span class="p">)]</span> <span class="o">==</span> <span class="n">i</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span>
+<span class="gp">... </span>        <span class="n">color</span><span class="o">=</span><span class="n">color</span><span class="p">,</span>
+<span class="gp">... </span>        <span class="n">alpha</span><span class="o">=.</span><span class="mi">8</span><span class="p">,</span>
+<span class="gp">... </span>        <span class="n">label</span><span class="o">=</span><span class="n">target_name</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s1">&#39;best&#39;</span><span class="p">,</span> <span class="n">shadow</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">scatterpoints</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Inc PCA of IRIS with additional points &amp; geom trans&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1">#</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># 2. pos estimation example</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1">#</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># incremental PCA result with only 3 features</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ipca_only_3d</span> <span class="o">=</span> <span class="n">IncPCA</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">22</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="n">ipca_only_3d</span><span class="o">.</span><span class="n">partial_fit</span><span class="p">(</span><span class="n">X</span><span class="p">[</span><span class="n">m</span> <span class="o">*</span> <span class="n">i</span><span class="p">:</span><span class="n">m</span> <span class="o">*</span> <span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">),</span> <span class="mi">0</span><span class="p">:</span><span class="mi">3</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">Y_only_3d</span> <span class="o">=</span> <span class="n">ipca_only_3d</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">X</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="n">m</span> <span class="o">*</span> <span class="mi">22</span><span class="p">,</span> <span class="mi">0</span><span class="p">:</span><span class="mi">3</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># compare actual position with PCA resutl with full features and estimated pos</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">actual_pos</span> <span class="o">=</span> <span class="n">ipca</span><span class="o">.</span><span class="n">transform</span><span class="p">([</span><span class="n">X</span><span class="p">[</span><span class="mi">48</span><span class="p">,</span> <span class="p">]])[</span><span class="mi">0</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pos_only_3d</span> <span class="o">=</span> <span class="n">ipca_only_3d</span><span class="o">.</span><span class="n">transform</span><span class="p">([</span><span class="n">X</span><span class="p">[</span><span class="mi">48</span><span class="p">,</span> <span class="mi">0</span><span class="p">:</span><span class="mi">3</span><span class="p">]])[</span><span class="mi">0</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">est_pos</span><span class="p">,</span> <span class="n">uncert_u</span> <span class="o">=</span> <span class="n">IncPCA</span><span class="o">.</span><span class="n">pos_est</span><span class="p">(</span><span class="n">pos_only_3d</span><span class="p">,</span> <span class="n">Y_only_3d</span><span class="p">,</span> <span class="n">Y_b</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">beta</span> <span class="o">=</span> <span class="mf">0.5</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">uncert_w</span> <span class="o">=</span> <span class="n">beta</span> <span class="o">*</span> <span class="n">uncert_u</span> <span class="o">+</span> <span class="p">(</span><span class="mf">1.0</span> <span class="o">-</span> <span class="n">beta</span><span class="p">)</span> <span class="o">*</span> <span class="n">ipca</span><span class="o">.</span><span class="n">get_uncert_v</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;actual pos:&quot;</span><span class="p">,</span> <span class="n">actual_pos</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;estimated pos:&quot;</span><span class="p">,</span> <span class="n">est_pos</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;combined uncertainty W:&quot;</span><span class="p">,</span> <span class="n">uncert_w</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1">#</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># 3. example of updating beta (combined uncertainty weight)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1">#</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># prepare ipca for each dimension l (l: {1, 2, 3, 4})</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ipcas</span> <span class="o">=</span> <span class="p">[</span>
+<span class="gp">... </span>    <span class="n">IncPCA</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">),</span>
+<span class="gp">... </span>    <span class="n">IncPCA</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">),</span>
+<span class="gp">... </span>    <span class="n">IncPCA</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">),</span>
+<span class="gp">... </span>    <span class="n">IncPCA</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)</span>
+<span class="gp">... </span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">D</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">ipcas</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">l</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">ipcas</span><span class="p">)):</span>
+<span class="gp">... </span>    <span class="n">ipcas</span><span class="p">[</span><span class="n">l</span><span class="p">]</span><span class="o">.</span><span class="n">partial_fit</span><span class="p">(</span><span class="n">X</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">10</span><span class="p">,</span> <span class="mi">0</span><span class="p">:</span><span class="n">l</span> <span class="o">+</span> <span class="mi">1</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">distance</span><span class="p">(</span><span class="n">p0</span><span class="p">,</span> <span class="n">p1</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="k">return</span> <span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">((</span><span class="n">p0</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">p1</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="p">(</span><span class="n">p0</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">p1</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># initial parameters</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">beta</span> <span class="o">=</span> <span class="mf">0.1</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sq_grad</span> <span class="o">=</span> <span class="mf">0.0</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sq_dbeta</span> <span class="o">=</span> <span class="mf">0.0</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">betas_for_plot</span> <span class="o">=</span> <span class="p">[</span><span class="n">beta</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="nb">iter</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">50</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="n">n</span> <span class="o">=</span> <span class="mi">10</span> <span class="o">+</span> <span class="n">m</span> <span class="o">*</span> <span class="nb">iter</span>
+<span class="gp">... </span>    <span class="n">sprimes</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="gp">... </span>    <span class="n">uncert_vs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">D</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="n">uncert_us</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">D</span><span class="p">,</span> <span class="n">m</span><span class="p">))</span>
+<span class="gp">...</span>
+<span class="gp">... </span>    <span class="n">Y_D</span> <span class="o">=</span> <span class="n">ipcas</span><span class="p">[</span><span class="n">D</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">X</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="n">n</span><span class="p">,</span> <span class="mi">0</span><span class="p">:</span><span class="n">D</span><span class="p">])</span>
+<span class="gp">...</span>
+<span class="gp">... </span>    <span class="k">for</span> <span class="n">l</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">D</span><span class="p">):</span>
+<span class="gp">... </span>        <span class="n">ipcas</span><span class="p">[</span><span class="n">l</span><span class="p">]</span><span class="o">.</span><span class="n">partial_fit</span><span class="p">(</span><span class="n">X</span><span class="p">[</span><span class="n">n</span><span class="p">:</span><span class="n">n</span> <span class="o">+</span> <span class="n">m</span><span class="p">,</span> <span class="mi">0</span><span class="p">:</span><span class="n">l</span> <span class="o">+</span> <span class="mi">1</span><span class="p">])</span>
+<span class="gp">... </span>        <span class="n">Y_l</span> <span class="o">=</span> <span class="n">ipcas</span><span class="p">[</span><span class="n">l</span><span class="p">]</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">X</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="n">n</span><span class="p">,</span> <span class="mi">0</span><span class="p">:</span><span class="n">l</span> <span class="o">+</span> <span class="mi">1</span><span class="p">])</span>
+<span class="gp">... </span>        <span class="c1"># add column with zeros when l=1 to make 2D points</span>
+<span class="gp">... </span>        <span class="k">if</span> <span class="p">(</span><span class="n">l</span> <span class="o">==</span> <span class="mi">0</span><span class="p">):</span>
+<span class="gp">... </span>            <span class="n">Y_l</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">((</span><span class="n">Y_l</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">n</span><span class="p">,</span> <span class="mi">1</span><span class="p">))),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="gp">...</span>
+<span class="gp">... </span>        <span class="n">uncert_vs</span><span class="p">[</span><span class="n">l</span><span class="p">]</span> <span class="o">=</span> <span class="n">ipcas</span><span class="p">[</span><span class="n">D</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">get_uncert_v</span><span class="p">(</span><span class="n">l</span><span class="p">)</span>
+<span class="gp">...</span>
+<span class="gp">... </span>        <span class="n">sigma</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">m</span><span class="p">,</span> <span class="n">n</span><span class="p">))</span>
+<span class="gp">... </span>        <span class="n">sprime</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">m</span><span class="p">,</span> <span class="n">n</span><span class="p">))</span>
+<span class="gp">...</span>
+<span class="gp">... </span>        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+<span class="gp">... </span>            <span class="k">for</span> <span class="n">u</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">m</span><span class="p">):</span>
+<span class="gp">... </span>                <span class="n">new_point</span> <span class="o">=</span> <span class="p">[</span><span class="n">X</span><span class="p">[</span><span class="n">n</span> <span class="o">+</span> <span class="n">u</span><span class="p">,</span> <span class="mi">0</span><span class="p">:</span><span class="n">l</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]]</span>
+<span class="gp">... </span>                <span class="n">new_point_pos</span> <span class="o">=</span> <span class="n">ipcas</span><span class="p">[</span><span class="n">l</span><span class="p">]</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">new_point</span><span class="p">)</span>
+<span class="gp">...</span>
+<span class="gp">... </span>                <span class="c1"># add column with zeros when l=1 to make 2D points</span>
+<span class="gp">... </span>                <span class="k">if</span> <span class="p">(</span><span class="n">l</span> <span class="o">==</span> <span class="mi">0</span><span class="p">):</span>
+<span class="gp">... </span>                    <span class="n">new_point_pos</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(</span>
+<span class="gp">... </span>                        <span class="p">(</span><span class="n">new_point_pos</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">))),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="gp">...</span>
+<span class="gp">... </span>                <span class="n">est_pos</span><span class="p">,</span> <span class="n">uncert_u</span> <span class="o">=</span> <span class="n">IncPCA</span><span class="o">.</span><span class="n">pos_est</span><span class="p">(</span><span class="n">new_point_pos</span><span class="p">,</span> <span class="n">Y_l</span><span class="p">,</span> <span class="n">Y_D</span><span class="p">)</span>
+<span class="gp">...</span>
+<span class="gp">... </span>                <span class="n">sigma</span><span class="p">[</span><span class="n">u</span><span class="p">,</span> <span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">distance</span><span class="p">(</span><span class="n">Y_D</span><span class="p">[</span><span class="o">-</span><span class="p">(</span><span class="n">m</span> <span class="o">+</span> <span class="n">u</span><span class="p">)],</span> <span class="n">Y_D</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+<span class="gp">... </span>                <span class="n">sprime</span><span class="p">[</span><span class="n">u</span><span class="p">,</span> <span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">distance</span><span class="p">(</span><span class="n">Y_l</span><span class="p">[</span><span class="o">-</span><span class="p">(</span><span class="n">m</span> <span class="o">+</span> <span class="n">u</span><span class="p">)],</span> <span class="n">Y_l</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+<span class="gp">... </span>                <span class="n">uncert_us</span><span class="p">[</span><span class="n">l</span><span class="p">,</span> <span class="n">u</span><span class="p">]</span> <span class="o">=</span> <span class="n">uncert_u</span>
+<span class="gp">... </span>        <span class="n">sprimes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">sprime</span><span class="p">)</span>
+<span class="gp">...</span>
+<span class="gp">... </span>    <span class="n">beta</span><span class="p">,</span> <span class="n">sq_grad</span><span class="p">,</span> <span class="n">sq_dbeta</span> <span class="o">=</span> <span class="n">IncPCA</span><span class="o">.</span><span class="n">update_uncert_weight</span><span class="p">(</span>
+<span class="gp">... </span>        <span class="n">beta</span><span class="p">,</span> <span class="n">sq_grad</span><span class="p">,</span> <span class="n">sq_dbeta</span><span class="p">,</span> <span class="n">sigma</span><span class="p">,</span> <span class="n">sprimes</span><span class="p">,</span> <span class="n">uncert_us</span><span class="p">,</span> <span class="n">uncert_vs</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="n">betas_for_plot</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">beta</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">betas_for_plot</span><span class="p">))),</span> <span class="n">betas_for_plot</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Number of updates&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;beta&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Automatic update of beta&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+<p class="rubric">Notes</p>
+<p>The incremental PCA model is from:
+<cite>D. Ross, J. Lim, R. Lin, M. Yang, Incremental Learning for Robust Visual
+Tracking, International Journal of Computer Vision, Volume 77, Issue 1-3,
+pp. 125-141, 2008.</cite>
+The geometric transformation, position estimation, and uncertatinty measures
+are from:
+<cite>T. Fujiwara, J.-K. Chou, Shilpika, P. Xu, L. Ren, K.-L. Ma, Incremental
+Dimensionality Reduction Method for Visualizing Streaming Multidimensional
+Data.</cite>
+The version of implementation in Scikit-learn was refered to implement the
+incremental PCA of Ross et al, 2008. However, this implementation includes
+various modifications (simplifying the parameters, adding forgetting factor,
+etc).
+Incremental PCA in Scikit-learn:
+<a class="reference external" href="http://scikit-learn.org/stable/auto_examples/decomposition/plot_incremental_pca.html">http://scikit-learn.org/stable/auto_examples/decomposition/plot_incremental_pca.html</a></p>
+<p class="rubric">References</p>
+<ol class="upperalpha simple" start="4">
+<li>Ross, J. Lim, R. Lin, M. Yang. Incremental Learning for Robust Visual
+Tracking, International Journal of Computer Vision, Volume 77,
+Issue 1-3, pp. 125-141, 2008.</li>
+</ol>
+<ol class="upperalpha simple" start="20">
+<li>Fujiwara, J.-K. Chou, Shilpika, P. Xu, L. Ren, K.-L. Ma, Incremental
+Dimensionality Reduction Method for Visualizing Streaming
+Multidimensional Data.</li>
+</ol>
+<dl class="classmethod">
+<dt id="inc_pca.IncPCA.geom_trans">
+<em class="property">classmethod </em><code class="descname">geom_trans</code><span class="sig-paren">(</span><em>Y1</em>, <em>Y2</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/inc_pca.html#IncPCA.geom_trans"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#inc_pca.IncPCA.geom_trans" title="Permalink to this definition">¶</a></dt>
+<dd><p>Finding the geometric transformation matrix, which maximizes the
+Y2’s overlap to Y1  with a combination of uniform scaling, rotation,
+and sign flipping.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>Y1</strong> (<em>array-like</em><em>, </em><em>shape</em><em> (</em><em>n_samples</em><em>, </em><em>n_dimensions</em><em>)</em>) – Data point positions (n_dimensions). Y1 is used as a base of ovarlapping.</li>
+<li><strong>Y2</strong> (<em>array-like</em><em>, </em><em>shape</em><em> (</em><em>n_samples</em><em>, </em><em>n_dimensions</em><em>)</em>) – Data point positions (n_dimensions). geom_trans finds a matrix to optimally
+overlap Y2 to Y1.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>Y2_g</strong> – Y2 after applied the geometric transformation.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">array-like, shape (n_samples, n_dimensions)</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="inc_pca.IncPCA.get_loadings">
+<code class="descname">get_loadings</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/inc_pca.html#IncPCA.get_loadings"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#inc_pca.IncPCA.get_loadings" title="Permalink to this definition">¶</a></dt>
+<dd><p>Obtaining current PC loadings.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><strong>W</strong> – Returns PC loadings.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">array-like, shape (n_components, n_features)</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="inc_pca.IncPCA.get_uncert_v">
+<code class="descname">get_uncert_v</code><span class="sig-paren">(</span><em>n_obtained_features</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/inc_pca.html#IncPCA.get_uncert_v"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#inc_pca.IncPCA.get_uncert_v" title="Permalink to this definition">¶</a></dt>
+<dd><p>Obtaining the uncertainty measure, V, introduced in
+[Fujiwara et al., xxxx] with current PCA result and a number of
+obtained features of a new data point.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>n_obtained_features</strong> (<em>int</em>) – Number of obtained features of a new data point.
+n_obtained_features must be &lt;= n_components.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><strong>V</strong> – Returns the uncertainty measure, V. V will be 0, 1 if
+n_obtained_features = 0, n_components, respectively.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">double</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="inc_pca.IncPCA.initialize">
+<code class="descname">initialize</code><span class="sig-paren">(</span><em>self: inc_pca_cpp.IncPCA</em><span class="sig-paren">)</span> &#x2192; None<a class="reference internal" href="_modules/inc_pca.html#IncPCA.initialize"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#inc_pca.IncPCA.initialize" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="inc_pca.IncPCA.partial_fit">
+<code class="descname">partial_fit</code><span class="sig-paren">(</span><em>X</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/inc_pca.html#IncPCA.partial_fit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#inc_pca.IncPCA.partial_fit" title="Permalink to this definition">¶</a></dt>
+<dd><p>Incremental fit with new datapoints, X. With this, PCs are updated
+from previous results incrementally. X’s row (i.e., number of data
+points) must be greater than or equal to 2.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>X</strong> (<em>array-like</em><em>, </em><em>shape</em><em> (</em><em>n_samples</em><em>, </em><em>n_features</em><em>)</em>) – Training data, where n_samples is the number of samples and
+n_features is the number of features. n_samples must be &gt;= 2.
+n_features and n_samples must be &gt;= n_components. Also, n_features
+must be the same size with the first X input to partial_fit.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><strong>self</strong> – Returns the instance itself.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">object</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="inc_pca.IncPCA.pos_est">
+<em class="property">classmethod </em><code class="descname">pos_est</code><span class="sig-paren">(</span><em>p</em>, <em>Y1</em>, <em>Y2</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/inc_pca.html#IncPCA.pos_est"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#inc_pca.IncPCA.pos_est" title="Permalink to this definition">¶</a></dt>
+<dd><p>Estaimated position of p. Refer [Fujiwara et al., xxxx].</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>p</strong> (<em>array-like</em><em>, </em><em>shape</em><em>(</em><em>1</em><em>, </em><em>2</em><em>)</em>) – A data point position trasformed with PCA of d=l (l&lt;=D).</li>
+<li><strong>Y1</strong> (<em>array-like</em><em>, </em><em>shape</em><em> (</em><em>n_samples</em><em>, </em><em>2</em><em>)</em>) – Data point positions (2D). Y1 shoule be a transformed position with
+PCA of d=l (l&lt;=D).</li>
+<li><strong>Y2</strong> (<em>array-like</em><em>, </em><em>shape</em><em> (</em><em>n_samples</em><em>, </em><em>2</em><em>)</em>) – Data point positions (2D). Y2 shoule be a transformed position with
+PCA of d=D.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><ul class="simple">
+<li><strong>est_pos</strong> (<em>array-like, shape(1, 2)</em>) – Returns the estimated 2D position.</li>
+<li><strong>uncert_u</strong> (<em>float</em>) – Reutrn the uncertainty measure, U</li>
+</ul>
+</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="inc_pca.IncPCA.transform">
+<code class="descname">transform</code><span class="sig-paren">(</span><em>X</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/inc_pca.html#IncPCA.transform"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#inc_pca.IncPCA.transform" title="Permalink to this definition">¶</a></dt>
+<dd><p>Obtaining transformed result Y with X and current PCs.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>X</strong> (<em>array-like</em><em>, </em><em>shape</em><em> (</em><em>n_samples</em><em>, </em><em>n_features</em><em>)</em>) – Testing data, where n_samples is the number of samples and
+n_features is the number of features. n_features must be the same
+size with the traiding data’s features used for partial_fit.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><strong>Y</strong> – Returns the transformed (or projected) result.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">array-like, shape (n_samples, n_components)</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="inc_pca.IncPCA.update_uncert_weight">
+<em class="property">classmethod </em><code class="descname">update_uncert_weight</code><span class="sig-paren">(</span><em>current_beta</em>, <em>current_sq_grad</em>, <em>current_sq_dbeta</em>, <em>sigma</em>, <em>sprimes</em>, <em>uncert_us</em>, <em>uncert_vs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/inc_pca.html#IncPCA.update_uncert_weight"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#inc_pca.IncPCA.update_uncert_weight" title="Permalink to this definition">¶</a></dt>
+<dd><p>Update the combined uncertainty weight, beta.
+Refer [Fujiwara et al., xxxx].</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>current_beta</strong> (<em>float</em>) – Current beta obtained Eq. 12 in [Fujiwara, xxx].</li>
+<li><strong>current_sq_grad</strong> (<em>float</em>) – Used in Adadelta calculation in Eq. 11. Set 0 as an initial value.</li>
+<li><strong>current_sq_dbeta</strong> (<em>float</em>) – Used in Adadelta calculation in Eq. 11. Set 0 as an initial value.</li>
+<li><strong>sigma</strong> (<em>array-like</em><em>, </em><em>shape</em><em>(</em><em>m</em><em>, </em><em>n</em><em>)</em>) – <dl class="docutils">
+<dt>Distance between m new data positions and n exisiting data positions</dt>
+<dd>in the PCA result after new data points obtain D dimensions.</dd>
+</dl>
+</li>
+<li><strong>sprimes</strong> (<em>array-like</em><em>, </em><em>D x shape</em><em>(</em><em>m</em><em>, </em><em>n</em><em>)</em>) – Distances between m esitmated data positions and n exisiting data
+positions for each dimension l (1 &lt;= l &lt;= D).</li>
+<li><strong>uncert_us</strong> (<em>array-like</em><em>, </em><em>shape</em><em>(</em><em>D</em><em>, </em><em>m</em><em>)</em>) – Uncertainty measure U for m new data points for each dimension l.</li>
+<li><strong>uncert_vs</strong> (<em>array-like</em><em>, </em><em>shape</em><em>(</em><em>D</em><em>)</em>) – Uncertainty measure V for each dimension l.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><ul class="simple">
+<li><strong>updated_beta</strong> (<em>float</em>)</li>
+<li><strong>updated_sq_grad</strong> (<em>float</em>)</li>
+<li><strong>updated_sq_dbeta</strong> (<em>float</em>) – Use these updated values for the next run of update_uncert_weight</li>
+</ul>
+</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+      
+        <a href="index.html" class="btn btn-neutral" title="Welcome to inc_pca’s documentation!" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2019, Author
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+
+  
+
+  <script type="text/javascript" src="_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

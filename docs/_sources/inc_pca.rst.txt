@@ -1,0 +1,7 @@
+inc\_pca module
+===============
+
+.. automodule:: inc_pca
+    :members:
+    :undoc-members:
+    :show-inheritance:

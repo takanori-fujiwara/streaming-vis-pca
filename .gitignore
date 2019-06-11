@@ -1,0 +1,13 @@
+*.out
+*.o
+*.so
+Makefile
+CMakeFiles/
+CMakeCache.txt
+*.cmake
+__pycache__/
+*.gz
+*.log
+*.pyc
+.DS_Store
+.Rhistory
