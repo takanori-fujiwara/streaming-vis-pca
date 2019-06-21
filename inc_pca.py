@@ -7,7 +7,7 @@ class IncPCA(inc_pca_cpp.IncPCA):
     """Incremental principal components analysis.
     Implementation of the incremental PCA of Ross et al., 2008 and the
     geometric transformation, position estimation, uncertatinty measures by
-    Fujiwara et al.
+    Fujiwara et al., 2019.
 
     Parameters
     ----------
@@ -197,7 +197,7 @@ class IncPCA(inc_pca_cpp.IncPCA):
     are from:
     `T. Fujiwara, J.-K. Chou, Shilpika, P. Xu, L. Ren, K.-L. Ma, Incremental
     Dimensionality Reduction Method for Visualizing Streaming Multidimensional
-    Data.`
+    Data, arXiv preprint, 2019.`
     The version of implementation in Scikit-learn was refered to implement the
     incremental PCA of Ross et al, 2008. However, this implementation includes
     various modifications (simplifying the parameters, adding forgetting factor,
@@ -211,7 +211,7 @@ class IncPCA(inc_pca_cpp.IncPCA):
         Issue 1-3, pp. 125-141, 2008.
      T. Fujiwara, J.-K. Chou, Shilpika, P. Xu, L. Ren, K.-L. Ma, Incremental
         Dimensionality Reduction Method for Visualizing Streaming
-        Multidimensional Data.
+        Multidimensional Data, arXiv preprint, 2019.
     """
 
     def __init__(self, n_components=2, forgetting_factor=1.0):
