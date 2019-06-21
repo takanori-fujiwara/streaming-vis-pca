@@ -44,19 +44,15 @@ Setup
 
 * Build with cmake
 
-    `mv /path/to/directory-of-CmakeLists.txt`
-
     `cmake .`
 
     `make`
 
 * This generates a shared library, "inc_pca_cpp.xxxx.so" (e.g., inc_pca_cpp.cpython-37m-darwin.so).
 
-* If you want to run sample.py in this directory. You need to install additional libraries.
+* Install the modules with pip3.
 
-    `pip3 install matplotlib`
-
-    `pip3 install sklearn`
+    `pip3 install .`
 
 #### Linux (tested on Ubuntu 18.0.4 LTS)
 * Install libraries
@@ -71,28 +67,22 @@ Setup
 
     `pip3 install numpy`
 
-* Move to 'inc_pca' directory then compile with:
+*  Compile with:
 
     ``c++ -O3 -Wall -mtune=native -march=native -shared -std=c++11 -I/usr/include/eigen3/ -fPIC `python3 -m pybind11 --includes` inc_pca.cpp inc_pca_wrap.cpp -o inc_pca_cpp`python3-config --extension-suffix` ``
 
 * This generates a shared library, "inc_pca_cpp.xxxx.so" (e.g., inc_pca_cpp.cpython-37m-x86_64-linux-gnu.so).
 
-* If you want to run sample.py in this directory. You need to install additional libraries.
+* Install the modules with pip3.
 
-    `sudo apt install python3-tk`
-
-    `pip3 install matplotlib`
-
-    `pip3 install sklearn`
+    `pip3 install .`
 
 ******
 
 Usage
 -----
 * With Python3
-    * Place inc_pca_cpp.xxxx.so and inc_pca.py in the same directory.
-
-    * Import "inc_pca" from python. See inc_pca.py or docs/index.html for detailed usage examples.
+    * Import "inc_pca" from python (`from inc_pca import IncPCA`). See sample.ipynb (jupyter notebook), inc_pca.py, or docs/index.html for detailed usage examples.
 
 * With C++
     * Include inc_pca.hpp in C++ code with inc_pca.cpp.
