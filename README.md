@@ -42,8 +42,6 @@ Setup
 
     `pip3 install numpy`
 
-* Modify CMakeLists.txt based on your Python3 and Eigen include directory paths.
-
 * Build with cmake
 
     `mv /path/to/directory-of-CmakeLists.txt`
