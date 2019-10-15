@@ -7,7 +7,8 @@ About
 * Incremental PCA for visualizing streaming multidimensional data from:    
 ***An Incremental Dimensionality Reduction Method for Visualizing Streaming Multidimensional Data***    
 Takanori Fujiwara, Jia-Kai Chou, Shilpika, Panpan Xu, Liu Ren, and Kwan-Liu Ma   
-To appear in IEEE Transactions on Visualization and Computer Graphics and IEEE VIS 2019 (InfoVis).
+IEEE Transactions on Visualization and Computer Graphics and IEEE VIS 2019 (InfoVis).
+DOI: [10.1109/TVCG.2019.2934433](https://doi.org/10.1109/TVCG.2019.2934433)
 
 * Features
   * Fast C++ implementation with Eigen3 of Incremental PCA from [Ross et al., 2008].
@@ -25,7 +26,7 @@ Requirements
 -----
 * C++11 compiler, Python3, Eigen3, Pybind11, Numpy
 
-* Note: Tested on macOS Mojave and Ubuntu 18.0.4 LTS.
+* Note: Tested on macOS Mojave and Ubuntu 19.0.4 LTS.
 
 ******
 
@@ -92,4 +93,5 @@ Usage
 ## How to Cite
 Please, cite:    
 Takanori Fujiwara, Jia-Kai Chou, Shilpika, Panpan Xu, Liu Ren, and Kwan-Liu Ma, "An Incremental Dimensionality Reduction Method for Visualizing Streaming Multidimensional Data".
-To appear in IEEE Transactions on Visualization and Computer Graphics and IEEE VIS 2019 (InfoVis).
+IEEE Transactions on Visualization and Computer Graphics, 2019.
+DOI: [10.1109/TVCG.2019.2934433](https://doi.org/10.1109/TVCG.2019.2934433)
