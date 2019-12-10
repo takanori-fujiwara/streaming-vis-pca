@@ -10,6 +10,8 @@ Takanori Fujiwara, Jia-Kai Chou, Shilpika, Panpan Xu, Liu Ren, and Kwan-Liu Ma
 IEEE Transactions on Visualization and Computer Graphics and IEEE VIS 2019 (InfoVis).
 DOI: [10.1109/TVCG.2019.2934433](https://doi.org/10.1109/TVCG.2019.2934433)
 
+* Demonstration videos from the application implemented in the paper above are available [here](https://takanori-fujiwara.github.io/s/inc-dr/index.html). Also, from [the same site](https://takanori-fujiwara.github.io/s/inc-dr/index.html), you can download a source code to reproduce the performance evaluation in the paper.
+
 * Features
   * Fast C++ implementation with Eigen3 of Incremental PCA from [Ross et al., 2008].
     * D. Ross, J. Lim, R. Lin, M. Yang. Incremental Learning for Robust Visual Tracking, International Journal of Computer Vision, Volume 77, Issue 1-3, pp. 125-141, 2008.
