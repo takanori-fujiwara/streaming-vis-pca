@@ -2,6 +2,10 @@
 
 Incremental PCA for visualizing streaming multidimensional data from [Fujiwara et al., 2019].
 
+New
+-----
+* All major OSs, Mac OS, Linux, Windows, are supported now (2022-04-28).
+
 About
 -----
 * Incremental PCA for visualizing streaming multidimensional data from:    
@@ -28,32 +32,14 @@ Requirements
 -----
 * C++11 compiler, Python3, Eigen3, Pybind11, Numpy
 
-* Note: Tested on macOS Mojave and Ubuntu 19.0.4 LTS.
+* Note: Tested on macOS Big Sur, Ubuntu 19.0.4 LTS, Windows 10.
 
 ******
 
 Setup
 -----
 #### Mac OS with Homebrew
-* Install libraries
-
-    `brew install python3`
-
-    `brew install eigen`
-
-    `brew install pybind11`
-
-    `pip3 install numpy`
-
-* Build with cmake
-
-    `cmake .`
-
-    `make`
-
-* This generates a shared library, "inc_pca_cpp.xxxx.so" (e.g., inc_pca_cpp.cpython-37m-darwin.so).
-
-* Install the modules with pip3.
+* Install the modules with pip3 (this also installs homebrew, pkg-config, python3, eigen, pybind11, numpy, if they do not exist).
 
     `pip3 install .`
 
@@ -62,23 +48,28 @@ Setup
 
     `sudo apt update`
 
-    `sudo apt install libeigen3-dev`
+    `sudo apt install libeigen3-dev python3-pip python3-dev`
 
-    `sudo apt install python3-pip python3-dev`
-
-    `pip3 install pybind11`
-
-    `pip3 install numpy`
-
-*  Compile with:
-
-    ``c++ -O3 -Wall -mtune=native -march=native -shared -std=c++11 -I/usr/include/eigen3/ -fPIC `python3 -m pybind11 --includes` inc_pca.cpp inc_pca_wrap.cpp -o inc_pca_cpp`python3-config --extension-suffix` ``
-
-* This generates a shared library, "inc_pca_cpp.xxxx.so" (e.g., inc_pca_cpp.cpython-37m-x86_64-linux-gnu.so).
+    * Note: Replace apt commands based on your Linux OS.
 
 * Install the modules with pip3.
 
     `pip3 install .`
+
+    * Note: If installation does not work, check setup.py and replace c++ commands based on your environment.
+
+#### Windows (tested on Windows 10, <span style="color:#ff8888">requiring MSVC as a C++ compiler</span>)
+* Install required compiler and library
+
+    - Install MSVC (Microsoft C++): For example, you can download from https://visualstudio.microsoft.com/downloads/?q=build+tools
+      (note: other compilers are not supported, e.g., MinGW)
+
+    - Install Python3 (https://www.python.org/downloads/windows/)
+
+* Install the modules with pip3 in "*Command Prompt for VS*". <span style="color:#ff8888">Note: if you installed 64-bit Python3, use *x64 Native Command Prompt for VS*</span>.
+
+    `pip3 install .`
+
 
 ******
 
@@ -95,5 +86,5 @@ Usage
 ## How to Cite
 Please, cite:    
 Takanori Fujiwara, Jia-Kai Chou, Shilpika, Panpan Xu, Liu Ren, and Kwan-Liu Ma, "An Incremental Dimensionality Reduction Method for Visualizing Streaming Multidimensional Data".
-IEEE Transactions on Visualization and Computer Graphics, 2019.
+IEEE Transactions on Visualization and Computer Graphics, Vol. 26, No. 1, pp. 418-428, 2020.
 DOI: [10.1109/TVCG.2019.2934433](https://doi.org/10.1109/TVCG.2019.2934433)
