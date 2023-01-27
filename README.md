@@ -11,7 +11,7 @@ About
 * Incremental PCA for visualizing streaming multidimensional data from:    
 ***An Incremental Dimensionality Reduction Method for Visualizing Streaming Multidimensional Data***    
 Takanori Fujiwara, Jia-Kai Chou, Shilpika, Panpan Xu, Liu Ren, and Kwan-Liu Ma   
-IEEE Transactions on Visualization and Computer Graphics and IEEE VIS 2019 (InfoVis).
+IEEE Transactions on Visualization and Computer Graphics and IEEE VIS 2020 (InfoVis 2019).
 DOI: [10.1109/TVCG.2019.2934433](https://doi.org/10.1109/TVCG.2019.2934433)
 
 * Demonstration videos from the application implemented in the paper above are available [here](https://takanori-fujiwara.github.io/s/inc-dr/index.html). Also, from [the same site](https://takanori-fujiwara.github.io/s/inc-dr/index.html), you can download a source code to reproduce the performance evaluation in the paper.
@@ -39,6 +39,15 @@ Requirements
 Setup
 -----
 #### Mac OS with Homebrew
+
+* Make sure if you have C++ compiler. For example,
+
+  `which c++`
+
+  should return the c++ compiler path (e.g., /usr/bin/c++) if it exists. If it does not exist, run:
+
+  `xcode-select --install`
+
 * Install the modules with pip3 (this also installs homebrew, pkg-config, python3, eigen, pybind11, numpy, if they do not exist).
 
     `pip3 install .`
