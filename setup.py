@@ -3,6 +3,7 @@ import sys
 import glob
 import sysconfig
 from distutils.core import setup
+from shutil import which
 
 
 def cpp_compiler_check(command_name='c++'):
