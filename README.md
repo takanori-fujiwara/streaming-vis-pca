@@ -52,7 +52,7 @@ Setup
 
     `pip3 install .`
 
-#### Linux (tested on Ubuntu 19.0.4 LTS)
+#### Linux (tested on Ubuntu 22.0.4 LTS)
 * Install libraries
 
     `sudo apt update`
