@@ -32,7 +32,7 @@ Requirements
 -----
 * C++11 compiler, Python3, Eigen3, Pybind11, Numpy
 
-* Note: Tested on macOS Big Sur, Ubuntu 19.0.4 LTS, Windows 10.
+* Note: Tested on macOS Ventura, Ubuntu 22.0.4 LTS, Windows 10.
 
 ******
 
