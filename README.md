@@ -4,6 +4,7 @@ Incremental PCA for visualizing streaming multidimensional data from [Fujiwara e
 
 New
 -----
+* Supported installation using virtual environments (due to the use of venv became a default from Python3.12)
 * All major OSs, Mac OS, Linux, Windows, are supported now (2022-04-28).
 
 About
@@ -32,7 +33,7 @@ Requirements
 -----
 * C++11 compiler, Python3, Eigen3, Pybind11, Numpy
 
-* Note: Tested on macOS Ventura, Ubuntu 22.0.4 LTS, Windows 10.
+* Note: Tested on macOS Sonoma, Ubuntu 22.0.4 LTS, Windows 10.
 
 ******
 
@@ -48,6 +49,13 @@ Setup
 
   `xcode-select --install`
 
+* Download and move to this repository. Then run presetup.py
+
+    `python3 presetup.py`
+
+    - Note (2024-04-14): For installation using virtualevn, proccesses listed in "presetup.py" are separated from "setup.py". This is due to venv's bug (module involved commands do not work correctly when using pip3 under venv).
+    - This python script generates C++ shared library of inc-pca also installs homebrew, pkg-config, python3, eigen, pybind11 if they do not exist.
+
 * Install the modules with pip3 (this also installs homebrew, pkg-config, python3, eigen, pybind11, numpy, if they do not exist).
 
     `pip3 install .`
@@ -62,6 +70,10 @@ Setup
     * Note: Replace apt commands based on your Linux OS.
 
 * Install the modules with pip3.
+    
+    `python3 presetup.py`
+
+    then,
 
     `pip3 install .`
 
@@ -75,7 +87,14 @@ Setup
 
     - Install Python3 (https://www.python.org/downloads/windows/)
 
+* Download and move to this repository. Then run presetup.py
+
+
 * Install the modules with pip3 in "*Command Prompt for VS*". <span style="color:#ff8888">Note: if you installed 64-bit Python3, use *x64 Native Command Prompt for VS*</span>.
+    
+    `python3 presetup.py` 
+
+    then,
 
     `pip3 install .`
 
