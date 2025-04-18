@@ -33,7 +33,7 @@ Requirements
 -----
 * C++11 compiler, Python3, Eigen3, Pybind11, Numpy
 
-* Note: Tested on macOS Sonoma, Ubuntu 22.0.4 LTS, Windows 10.
+* Note: Tested on macOS Sequoia, Ubuntu 22.0.4 LTS, Windows 10.
 
 ******
 
@@ -53,7 +53,7 @@ Setup
 
     `python3 presetup.py`
 
-    - Note (2024-04-14): For installation using virtualevn, proccesses listed in "presetup.py" are separated from "setup.py". This is due to venv's bug (module involved commands do not work correctly when using pip3 under venv).
+    - Note (2024-04-14): For installation using virtualenv, proccesses listed in "presetup.py" are separated from "setup.py". This is due to venv's bug (module involved commands do not work correctly when using pip3 under venv).
     - This python script generates C++ shared library of inc-pca also installs homebrew, pkg-config, python3, eigen, pybind11 if they do not exist.
 
 * Install the modules with pip3 (this also installs homebrew, pkg-config, python3, eigen, pybind11, numpy, if they do not exist).
